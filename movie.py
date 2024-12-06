@@ -42,10 +42,17 @@ class Movie():
         else:
             logging.warning(f"Le film {self.title} n'a pas été trouvé. Impossible de le supprimer")
             return False
-            
+    
+    def get_all_movies(self):
+        movies = self._get_movies()
+        if movies:
+            instances_movies = [Movie(movie) for movie in movies]
+            return instances_movies
+        else:
+            logging.warning("Votre liste de film est actuellement vide")
+            return []
+
+
 
 if __name__ == "__main__":
     pass
-
-    
-    
