@@ -32,7 +32,16 @@ class Movie():
         else:
             logging.warning(f"Le film {self.title} est déjà présent dans la liste.")
             return False
-            
+    
+    def remove_from_movies(self):
+        movies = self._get_movies()
+        if self.title in movies:
+            movies.remove(self.title)
+            self._write_movies(movies)
+            return True
+        else:
+            logging.warning(f"Le film {self.title} n'a pas été trouvé. Impossible de le supprimer")
+            return False
             
 
 if __name__ == "__main__":
