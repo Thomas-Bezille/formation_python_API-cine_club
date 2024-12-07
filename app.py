@@ -15,6 +15,7 @@ class App(QtWidgets.QWidget):
         self.btn_add_movie = QtWidgets.QPushButton("Ajouter un film")
         self.lbl_info = QtWidgets.QLabel("")
         self.lst_movie_list = QtWidgets.QListWidget()
+        self.lst_movie_list.setSelectionMode(QtWidgets.QListWidget.ExtendedSelection) # type: ignore
         self.btn_rem_movie = QtWidgets.QPushButton("Supprimer le(s) film(s)")
         
         self.layout.addWidget(self.lne_movie_title)
@@ -39,7 +40,7 @@ class App(QtWidgets.QWidget):
         self.lbl_info.setText("")
         movie_to_add = self.lne_movie_title.text()
         if not movie_to_add:
-            self.lbl_info.setText("Vous devez renseigner un titre de film.")
+            self.lbl_info.setText("* Vous devez renseigner un titre de film.")
             return False
         
         movie = Movie(movie_to_add)
@@ -50,14 +51,17 @@ class App(QtWidgets.QWidget):
             lw_item = QtWidgets.QListWidgetItem(movie.title)
             lw_item.setData(QtCore.Qt.ItemDataRole.UserRole, movie)
             self.lst_movie_list.addItem(lw_item)
-            self.lbl_info.setText("Le film a bien été ajouté.")
+            self.lbl_info.setText("* Le film a bien été ajouté.")
         else:
-            self.lbl_info.setText("Le film que vous voulez ajouter existe déjà.")
+            self.lbl_info.setText("* Le film que vous voulez ajouter existe déjà.")
         
         self.lne_movie_title.setText("")
     
     def remove_movie(self):
-        print("On supprime un film")
+        for selected_item in self.lst_movie_list.selectedItems():
+            movie = selected_item.data(QtCore.Qt.ItemDataRole.UserRole)
+            movie.remove_from_movies()
+            self.lst_movie_list.takeItem(self.lst_movie_list.row(selected_item))
 
 
 app = QtWidgets.QApplication([])
