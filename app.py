@@ -58,10 +58,13 @@ class App(QtWidgets.QWidget):
         self.lne_movie_title.setText("")
     
     def remove_movie(self):
+        self.lbl_info.setText("")
         for selected_item in self.lst_movie_list.selectedItems():
             movie = selected_item.data(QtCore.Qt.ItemDataRole.UserRole)
             movie.remove_from_movies()
             self.lst_movie_list.takeItem(self.lst_movie_list.row(selected_item))
+        
+        self.lbl_info.setText("* Le(s) film(s) a bien été supprimé.")
 
 
 app = QtWidgets.QApplication([])
