@@ -9,7 +9,7 @@ CUR_DIR = Path(__file__).resolve().parent
 DATA_FILE = CUR_DIR / "data" / "movies.json"
 
 class Movie():
-    def __init__(self, title: str):
+    def __init__(self, title: str = ""):
         self.title = title.title()
     
     def __str__(self):
@@ -43,14 +43,12 @@ class Movie():
             logging.warning(f"Le film {self.title} n'a pas été trouvé. Impossible de le supprimer")
             return False
     
-    def get_all_movies(self):
-        movies = self._get_movies()
-        if movies:
-            instances_movies = [Movie(movie) for movie in movies]
-            return instances_movies
-        else:
-            logging.warning("Votre liste de film est actuellement vide")
-            return []
+def get_all_movies():
+    with open(DATA_FILE, "r") as f:
+        movies_title = json.load(f)
+    
+    movies = [Movie(movie_title) for movie_title in movies_title]
+    return movies
 
 
 
